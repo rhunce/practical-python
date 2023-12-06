@@ -25,6 +25,7 @@ name,shares,price
 """
 
 import csv
+import sys
 
 
 def portfolio_cost(filename):
@@ -43,6 +44,12 @@ def portfolio_cost(filename):
         return cost
 
 
-cost = portfolio_cost("Data/portfolio.csv")
+if len(sys.argv) == 2:
+    filename = sys.argv[1]
+else:
+    filename = "Data/portfolio.csv"
+
+
+cost = portfolio_cost(filename)
 # cost = portfolio_cost("Data/missing.csv")
 print(f"Total Cost: ${cost:.2f}")

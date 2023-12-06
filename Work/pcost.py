@@ -4,7 +4,6 @@
 
 """
 Data/portfolio.csv
-
 name,       shares,     price
 "AA",       100,        32.20
 "IBM",      50,         91.10
@@ -14,7 +13,7 @@ name,       shares,     price
 "MSFT",     50,         65.10
 "IBM",      100,        70.44
 
-
+Data/missing.csv
 name,shares,price
 "AA",100,32.20
 "IBM",50,91.10
@@ -25,23 +24,25 @@ name,shares,price
 "IBM",,70.44
 """
 
+import csv
+
 
 def portfolio_cost(filename):
-    with open(filename, "rt") as f:
-        headers = next(f)
+    with open(filename) as f:
+        rows = csv.reader(f)
+        headers = next(rows)
         cost = 0
-        for line in f:
+        for row in rows:
             try:
-                stock_info = line.split(",")
-                shares = int(stock_info[1])
-                price = float(stock_info[2])
+                shares = int(row[1])
+                price = float(row[2])
                 cost += shares * price
             except ValueError:
-                print("Couldn't parse", line, end="")
+                print("Couldn't parse", row)
 
         return cost
 
 
-# cost = portfolio_cost("Data/portfolio.csv")
-cost = portfolio_cost("Data/missing.csv")
+cost = portfolio_cost("Data/portfolio.csv")
+# cost = portfolio_cost("Data/missing.csv")
 print(f"Total Cost: ${cost:.2f}")

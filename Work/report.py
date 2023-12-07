@@ -51,11 +51,8 @@ def make_report(portfolio, prices):
     return report
 
 
-def print_report(filename1="Data/portfolio.csv", filename2="Data/prices.csv"):
+def print_report(report):
     """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
-    portfolio = read_portfolio(filename1)
-    prices = read_prices(filename2)
-    report = make_report(portfolio, prices)
     headers = ("Name", "Shares", "Price", "Change")
     print(f"{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}")
     print(("-" * 10 + " ") * len(headers))
@@ -65,3 +62,16 @@ def print_report(filename1="Data/portfolio.csv", filename2="Data/prices.csv"):
     # ALTERNATIVE
     # for r in report:
     #     print("%10s %10d %10.2f %10.2f" % r)
+
+
+def portfolio_report(
+    portfolio_filename="Data/portfolio.csv", prices_filename="Data/prices.csv"
+):
+    """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
+    portfolio = read_portfolio(portfolio_filename)
+    prices = read_prices(prices_filename)
+    report = make_report(portfolio, prices)
+    print_report(report)
+
+
+portfolio_report("Data/portfolio.csv", "Data/prices.csv")

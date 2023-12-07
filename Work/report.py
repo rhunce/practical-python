@@ -3,6 +3,7 @@
 # Exercise 2.4
 
 import csv
+from pprint import pprint
 
 
 def read_portfolio(filename):
@@ -31,3 +32,16 @@ def read_prices(filename):
                 print("Skipping empty row...")
 
     return prices
+
+
+def compute_gain(filename1, filename2):
+    total_gain = 0
+    portfolio = read_portfolio(filename1)
+    prices = read_prices(filename2)
+    for holding in portfolio:
+        stock = holding["name"]
+        cost_basis = holding["price"] * holding["shares"]
+        current_value = prices[stock] * holding["shares"]
+        stock_gain = current_value - cost_basis
+        total_gain += stock_gain
+    return total_gain

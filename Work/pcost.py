@@ -29,7 +29,7 @@ import sys
 
 
 def portfolio_cost(filename):
-    """Computes the total cost (shares*price) of a portfolio file"""
+    """Computes the total cost (shares*price) of a portfolio file."""
     total_cost = 0
     with open(filename, "rt") as f:
         rows = csv.reader(f)

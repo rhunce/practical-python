@@ -5,7 +5,14 @@
 import csv
 
 
-def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=","):
+def parse_csv(
+    filename,
+    select=None,
+    types=None,
+    has_headers=True,
+    delimiter=",",
+    silence_errors=False,
+):
     """Parse a CSV file into a list of records."""
     if select and not has_headers:
         raise RuntimeError("select argument requires column headers")
@@ -40,13 +47,14 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=","
                 try:
                     row = [func(val) for func, val in zip(types, row)]
                 except ValueError as e:
+                    if silence_errors:
+                        continue
                     print(f"Row {idx}: Could not convert {row}")
                     print(f"Reason: {e}")
                     continue
 
             # Make a dictionary, or tuple if not has_headers
             record = dict(zip(headers, row)) if has_headers else tuple(row)
-
             records.append(record)
 
     return records

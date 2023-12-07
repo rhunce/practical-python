@@ -6,15 +6,21 @@ import csv
 
 
 def read_portfolio(filename):
-    """Opens a given portfolio file and reads it into a list of dictionaries."""
+    """Read a stock portfolio file into a list of dictionaries with keys
+    name, shares, and price."""
     portfolio = []
 
     with open(filename, "rt") as f:
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
-            holding = dict(zip(headers, row))
-            portfolio.append(holding)
+            record = dict(zip(headers, row))
+            stock = {
+                "name": record["name"],
+                "shares": int(record["shares"]),
+                "price": float(record["price"]),
+            }
+            portfolio.append(stock)
     return portfolio
 
 
@@ -38,9 +44,9 @@ def make_report(portfolio, prices):
     report = []
     for holding in portfolio:
         stock = holding["name"]
-        n_shares = int(holding["shares"])
+        n_shares = holding["shares"]
         current_price = prices[stock]
-        share_appreciation = float(current_price) - float(holding["price"])
+        share_appreciation = current_price - holding["price"]
         report.append((stock, n_shares, current_price, share_appreciation))
     return report
 
@@ -52,7 +58,7 @@ def print_report(filename1="Data/portfolio.csv", filename2="Data/prices.csv"):
     report = make_report(portfolio, prices)
     headers = ("Name", "Shares", "Price", "Change")
     print(f"{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}")
-    print("---------- ---------- ---------- -----------")
+    print(("-" * 10 + " ") * len(headers))
     for name, shares, price, change in report:
         formatted_price = f"${price:.2f}"
         print(f"{name:>10s} {shares:>10d} {formatted_price:>10s} {change:>10.2f}")

@@ -34,14 +34,22 @@ def read_prices(filename):
     return prices
 
 
-def compute_gain(filename1, filename2):
-    total_gain = 0
-    portfolio = read_portfolio(filename1)
-    prices = read_prices(filename2)
+def make_report(portfolio, prices):
+    """Makes a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
+    report = []
     for holding in portfolio:
         stock = holding["name"]
-        cost_basis = holding["price"] * holding["shares"]
-        current_value = prices[stock] * holding["shares"]
-        stock_gain = current_value - cost_basis
-        total_gain += stock_gain
-    return total_gain
+        n_shares = holding["shares"]
+        current_price = prices[stock]
+        share_appreciation = current_price - holding["price"]
+        report.append((stock, n_shares, current_price, share_appreciation))
+    return report
+
+
+def print_report(filename1="Data/portfolio.csv", filename2="Data/prices.csv"):
+    """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
+    portfolio = read_portfolio(filename1)
+    prices = read_prices(filename2)
+    report = make_report(portfolio, prices)
+    for r in report:
+        print(r)

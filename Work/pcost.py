@@ -29,19 +29,20 @@ import sys
 
 
 def portfolio_cost(filename):
-    with open(filename) as f:
+    """Computes the total cost (shares*price) of a portfolio file"""
+    total_cost = 0
+    with open(filename, "rt") as f:
         rows = csv.reader(f)
         headers = next(rows)
-        cost = 0
         for row in rows:
             try:
-                shares = int(row[1])
+                n_shares = int(row[1])
                 price = float(row[2])
-                cost += shares * price
+                total_cost += n_shares * price
             except ValueError:
                 print("Couldn't parse", row)
 
-        return cost
+        return total_cost
 
 
 if len(sys.argv) == 2:

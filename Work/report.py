@@ -3,7 +3,6 @@
 # Exercise 2.4
 
 import csv
-from pprint import pprint
 
 
 def read_portfolio(filename):

@@ -35,9 +35,10 @@ def portfolio_cost(filename):
         rows = csv.reader(f)
         headers = next(rows)
         for rowno, row in enumerate(rows, start=1):
+            record = dict(zip(headers, row))
             try:
-                n_shares = int(row[1])
-                price = float(row[2])
+                n_shares = int(record["shares"])
+                price = float(record["price"])
                 total_cost += n_shares * price
             except ValueError:
                 print(f"Row {rowno}: Bad row: {row}")
@@ -52,5 +53,6 @@ else:
 
 
 # cost = portfolio_cost(filename)
-cost = portfolio_cost("Data/missing.csv")
+# cost = portfolio_cost("Data/missing.csv")
+cost = portfolio_cost("Data/portfoliodate.csv")
 print(f"Total Cost: ${cost:.2f}")

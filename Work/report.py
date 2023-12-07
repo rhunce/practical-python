@@ -14,7 +14,7 @@ def read_portfolio(filename):
         rows = csv.reader(f)
         headers = next(rows)
         for row in rows:
-            holding = {"name": row[0], "shares": int(row[1]), "price": float(row[2])}
+            holding = dict(zip(headers, row))
             portfolio.append(holding)
     return portfolio
 
@@ -39,9 +39,9 @@ def make_report(portfolio, prices):
     report = []
     for holding in portfolio:
         stock = holding["name"]
-        n_shares = holding["shares"]
+        n_shares = int(holding["shares"])
         current_price = prices[stock]
-        share_appreciation = current_price - holding["price"]
+        share_appreciation = float(current_price) - float(holding["price"])
         report.append((stock, n_shares, current_price, share_appreciation))
     return report
 

@@ -51,5 +51,12 @@ def print_report(filename1="Data/portfolio.csv", filename2="Data/prices.csv"):
     portfolio = read_portfolio(filename1)
     prices = read_prices(filename2)
     report = make_report(portfolio, prices)
-    for r in report:
-        print(r)
+    headers = ("Name", "Shares", "Price", "Change")
+    print(f"{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}")
+    print("---------- ---------- ---------- -----------")
+    for name, shares, price, change in report:
+        formatted_price = f"${price:.2f}"
+        print(f"{name:>10s} {shares:>10d} {formatted_price:>10s} {change:>10.2f}")
+    # ALTERNATIVE
+    # for r in report:
+    #     print("%10s %10d %10.2f %10.2f" % r)

@@ -20,17 +20,22 @@ def portfolio_cost(filename, select=None, types=None):
     return total_cost
 
 
-if len(sys.argv) == 2:
-    filename = sys.argv[1]
-else:
-    filename = "Data/portfolio.csv"
+def main(argv):
+    cost = None
+    if len(argv) != 2:
+        cost = portfolio_cost(
+            "Data/portfolio.csv",
+            select=["name", "shares", "price"],
+            types=[str, int, float],
+        )
+    else:
+        cost = portfolio_cost(
+            argv[1], select=["name", "shares", "price"], types=[str, int, float]
+        )
+    print(f"Total Cost: ${cost:.2f}")
 
 
-# cost = portfolio_cost(filename)
-# cost = portfolio_cost("Data/missing.csv")
-cost = portfolio_cost(
-    "Data/portfoliodate.csv",
-    select=["name", "shares", "price"],
-    types=[str, int, float],
-)
-print(f"Total Cost: ${cost:.2f}")
+if __name__ == "__main__":
+    import sys
+
+    main(sys.argv)

@@ -6,10 +6,10 @@ import csv
 import fileparse
 
 
-def read_portfolio(filename):
+def read_portfolio(filename, select=None, types=None):
     """Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price."""
-    return fileparse.parse_csv(filename, types=[str, int, float])
+    return fileparse.parse_csv(filename, select=select, types=types)
 
 
 def read_prices(filename):
@@ -46,10 +46,10 @@ def portfolio_report(
     portfolio_filename="Data/portfolio.csv", prices_filename="Data/prices.csv"
 ):
     """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
-    portfolio = read_portfolio(portfolio_filename)
+    portfolio = read_portfolio(portfolio_filename, types=[str, int, float])
     prices = read_prices(prices_filename)
     report = make_report(portfolio, prices)
     print_report(report)
 
 
-portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+# portfolio_report("Data/portfolio.csv", "Data/prices.csv")

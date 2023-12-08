@@ -52,4 +52,14 @@ def portfolio_report(
     print_report(report)
 
 
-# portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+def main(argv):
+    if len(argv) != 3:
+        portfolio_report("Data/portfolio.csv", "Data/prices.csv")
+    else:
+        portfolio_report(argv[1], argv[2])
+
+
+if __name__ == "__main__":
+    import sys
+
+    main(sys.argv)

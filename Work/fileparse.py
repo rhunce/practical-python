@@ -1,7 +1,4 @@
 # fileparse.py
-#
-# Exercise 3.3
-
 import csv
 
 
@@ -13,14 +10,11 @@ def parse_csv(
     delimiter=",",
     silence_errors=False,
 ):
-    """Parse a CSV file into a list of records with type conversion."""
+    """
+    Parse a CSV file into a list of records with type conversion.
+    """
     if select and not has_headers:
-        raise RuntimeError("select argument requires column headers")
-
-    if type(lines) != list:
-        raise ValueError(
-            f"First argument, `lines`, must be of type `list`. Passed argument was of type: {type(lines)}"
-        )
+        raise RuntimeError("select requires column headers")
 
     rows = csv.reader(lines, delimiter=delimiter)
 
@@ -33,8 +27,8 @@ def parse_csv(
         headers = select
 
     records = []
-    for rowno, row in enumerate(rows, start=1):
-        if not row:
+    for rowno, row in enumerate(rows, 1):
+        if not row:  # Skip rows with no data
             continue
 
         # If specific column indices are selected, pick them out
@@ -48,11 +42,14 @@ def parse_csv(
             except ValueError as e:
                 if not silence_errors:
                     print(f"Row {rowno}: Couldn't convert {row}")
-                    print(f"Row {rowno}: Reason: {e}")
+                    print(f"Row {rowno}: Reason {e}")
                 continue
 
         # Make a dictionary or a tuple
-        record = dict(zip(headers, row)) if headers else tuple(row)
+        if headers:
+            record = dict(zip(headers, row))
+        else:
+            record = tuple(row)
         records.append(record)
 
     return records

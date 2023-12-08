@@ -2,61 +2,60 @@
 #
 # Exercise 2.4
 
-import csv
 import fileparse
 
 
-def read_portfolio(filename, select=None, types=None):
+def read_portfolio(filename):
     """Read a stock portfolio file into a list of dictionaries with keys
     name, shares, and price."""
-    return fileparse.parse_csv(filename, select=select, types=types)
+    return fileparse.parse_csv(
+        filename, select=["name", "shares", "price"], types=[str, int, float]
+    )
 
 
 def read_prices(filename):
-    """Opens a given prices file and reads it into a list of dictionaries."""
+    """Read a CSV file of price data into a dict mapping names to prices."""
     return dict(fileparse.parse_csv(filename, types=[str, float], has_headers=False))
 
 
-def make_report(portfolio, prices):
-    """Makes a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
-    report = []
-    for holding in portfolio:
-        stock = holding["name"]
-        n_shares = holding["shares"]
-        current_price = prices[stock]
-        share_appreciation = current_price - holding["price"]
-        report.append((stock, n_shares, current_price, share_appreciation))
-    return report
+def make_report_data(portfolio, prices):
+    """Make a list of (name, shares, price, change) tuples given a portfolio list
+    and prices dictionary."""
+    rows = []
+    for stock in portfolio:
+        current_price = prices[stock["name"]]
+        change = current_price - stock["price"]
+        summary = (stock["name"], stock["shares"], current_price, change)
+        rows.append(summary)
+    return rows
 
 
-def print_report(report):
-    """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
+def print_report(reportdata):
+    """Print a nicely formatted table from a list of (name, shares, price, change) tuples."""
     headers = ("Name", "Shares", "Price", "Change")
-    print(f"{headers[0]:>10s} {headers[1]:>10s} {headers[2]:>10s} {headers[3]:>10s}")
+    print("%10s %10s %10s %10s" % headers)
     print(("-" * 10 + " ") * len(headers))
-    for name, shares, price, change in report:
-        formatted_price = f"${price:.2f}"
-        print(f"{name:>10s} {shares:>10d} {formatted_price:>10s} {change:>10.2f}")
-    # ALTERNATIVE
-    # for r in report:
-    #     print("%10s %10d %10.2f %10.2f" % r)
+    for row in reportdata:
+        print("%10s %10d %10.2f %10.2f" % row)
 
 
-def portfolio_report(
-    portfolio_filename="Data/portfolio.csv", prices_filename="Data/prices.csv"
-):
-    """Prints a report of stocks in portfolio with the shares owned, current price, and share gain/loss."""
-    portfolio = read_portfolio(portfolio_filename, types=[str, int, float])
-    prices = read_prices(prices_filename)
-    report = make_report(portfolio, prices)
+def portfolio_report(portfoliofile, pricefile):
+    """Make a stock report given portfolio and price data files."""
+    # Read data files
+    portfolio = read_portfolio(portfoliofile)
+    prices = read_prices(pricefile)
+
+    # Create the report data
+    report = make_report_data(portfolio, prices)
+
+    # Print it out
     print_report(report)
 
 
 def main(argv):
     if len(argv) != 3:
-        portfolio_report("Data/portfolio.csv", "Data/prices.csv")
-    else:
-        portfolio_report(argv[1], argv[2])
+        raise SystemExit("Usage: %s portfile pricefile" % args[0])
+    portfolio_report(argv[1], argv[2])
 
 
 if __name__ == "__main__":

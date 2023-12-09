@@ -1,5 +1,7 @@
 # stock.py
 
+from typedproperty import String, Integer, Float
+
 
 class Stock:
     """
@@ -9,6 +11,10 @@ class Stock:
     # Note: __slots__ is most commonly used as an optimization on classes that serve as data structures.
     # Using slots will make such programs use far-less memory and run a bit faster.
     # __slots__ = ("name", "_shares", "price")
+
+    name = String("name")
+    shares = Integer("shares")
+    price = Float("price")
 
     def __init__(self, name, shares, price):
         self.name = name

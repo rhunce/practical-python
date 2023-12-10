@@ -31,16 +31,6 @@ class Stock:
         """
         return self.shares * self.price
 
-    @property
-    def shares(self):
-        return self.shares
-
-    @shares.setter
-    def shares(self, value):
-        if not isinstance(value, int):
-            raise TypeError("Expected int")
-        self.shares = value
-
     def sell(self, nshares):
         """
         Sell a number of shares

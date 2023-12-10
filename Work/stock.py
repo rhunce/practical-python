@@ -10,7 +10,7 @@ class Stock:
 
     # Note: __slots__ is most commonly used as an optimization on classes that serve as data structures.
     # Using slots will make such programs use far-less memory and run a bit faster.
-    # __slots__ = ("name", "_shares", "price")
+    # __slots__ = ("name", "shares", "price")
 
     name = String("name")
     shares = Integer("shares")
@@ -33,13 +33,13 @@ class Stock:
 
     @property
     def shares(self):
-        return self._shares
+        return self.shares
 
     @shares.setter
     def shares(self, value):
         if not isinstance(value, int):
             raise TypeError("Expected int")
-        self._shares = value
+        self.shares = value
 
     def sell(self, nshares):
         """

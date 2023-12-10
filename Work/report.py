@@ -15,12 +15,14 @@ def read_portfolio(filename, **opts):
         return Portfolio.from_csv(file, **opts)
 
 
-def read_prices(filename):
+def read_prices(filename, **opts):
     """
     Read a CSV file of price data into a dict mapping names to prices.
     """
     with open(filename) as lines:
-        return dict(fileparse.parse_csv(lines, types=[str, float], has_headers=False))
+        return dict(
+            fileparse.parse_csv(lines, types=[str, float], has_headers=False, **opts)
+        )
 
 
 def make_report_data(portfolio, prices):
@@ -41,7 +43,7 @@ def print_report(reportdata, formatter):
     """
     Print a nicely formated table from a list of (name, shares, price, change) tuples.
     """
-    headers = formatter.headings(["Name", "Shares", "Price", "Change"])
+    formatter.headings(["Name", "Shares", "Price", "Change"])
     for name, shares, price, change in reportdata:
         rowdata = [name, str(shares), f"{price:0.2f}", f"{change:0.2f}"]
         formatter.row(rowdata)

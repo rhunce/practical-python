@@ -15,7 +15,7 @@ def convert_types(rows, types):
 
 
 def make_dicts(rows, headers):
-    rows = (dict(zip(headers, row)) for row in rows)
+    return (dict(zip(headers, row)) for row in rows)
 
 
 def parse_stock_data(lines):
